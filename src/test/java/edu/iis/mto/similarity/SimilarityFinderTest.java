@@ -1,15 +1,19 @@
 package edu.iis.mto.similarity;
 
+import edu.iis.mto.search.SequenceSearcher;
 import org.junit.Test;
+import org.mockito.Mockito;
 
-import static org.hamcrest.Matchers.closeTo;
-
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.*;
 
 public class SimilarityFinderTest {
     private static final double DELTA = 0.001;
 
-    private SequenceSearcherStub searcher;
+    private SequenceSearcher searcher;
     private SimilarityFinder similarityFinder;
 
     int[] seq1, seq2;
@@ -56,5 +60,16 @@ public class SimilarityFinderTest {
 
         double result = similarityFinder.calculateJackardSimilarity(seq1, seq2);
         assertThat(result, closeTo(0.429, DELTA));
+    }
+
+    @Test
+    public void emptySequencesShouldNotCallSearch() {
+        searcher = Mockito.mock(SequenceSearcher.class);
+        similarityFinder = new SimilarityFinder(searcher);
+        seq1 = new int[] {};
+        seq2 = new int[] {};
+
+        similarityFinder.calculateJackardSimilarity(seq1, seq2);
+        verify(searcher, never()).search(anyInt(), any(int[].class));
     }
 }
