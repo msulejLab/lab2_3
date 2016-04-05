@@ -36,4 +36,14 @@ public class SimilarityFinderTest {
         assertThat(result, closeTo(1, DELTA));
     }
 
+    @Test
+    public void completelyDifferentSequencesShouldReturnZero() {
+        searcher = new SequenceSearcherStub();
+        similarityFinder = new SimilarityFinder(searcher);
+        seq1 = new int[] {1, 2, 3, 4};
+        seq2 = new int[] {5, 6, 7, 8};
+
+        double result = similarityFinder.calculateJackardSimilarity(seq1, seq2);
+        assertThat(result, closeTo(0, DELTA));
+    }
 }
