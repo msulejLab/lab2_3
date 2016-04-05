@@ -24,4 +24,16 @@ public class SimilarityFinderTest {
         double result = similarityFinder.calculateJackardSimilarity(seq1, seq2);
         assertThat(result, closeTo(1, DELTA));
     }
+
+    @Test
+    public void equalSequencesShouldReturnOne() {
+        searcher = new SequenceSearcherStub();
+        similarityFinder = new SimilarityFinder(searcher);
+        seq1 = new int[] {1, 2, 3, 4};
+        seq2 = new int[] {1, 2, 3, 4};
+
+        double result = similarityFinder.calculateJackardSimilarity(seq1, seq2);
+        assertThat(result, closeTo(1, DELTA));
+    }
+
 }
